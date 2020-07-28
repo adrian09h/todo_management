@@ -51,6 +51,9 @@ project.ext {
     rxAndroidVersion = "2.0.1"
     daggerVersion = "2.15"
     sdp_version = "1.0.6"
+    lifecycle = "2.1.0"
+    daggerVersion = "2.17"
+    roomVersion = "1.1.1"
 }
 
 dependencies {
@@ -62,7 +65,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.1.0'
     implementation 'androidx.navigation:navigation-ui:2.1.0'
 
-    //http client
+    //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$project.retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$project.retrofitVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$project.retrofitVersion"
@@ -76,7 +79,22 @@ dependencies {
 
     //lifecycle
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation "androidx.lifecycle:lifecycle-extensions:$project.lifecycle"
+
+    // ReactiveX
+    implementation "io.reactivex.rxjava2:rxjava:$project.rxJavaVersion"
+    implementation "io.reactivex.rxjava2:rxandroid:$project.rxAndroidVersion"
+
+    // Dagger 2
+    implementation "com.google.dagger:dagger-android:$project.daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$project.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-android-processor:$project.daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$project.daggerVersion"
+
+    /* Android Architecture Component - Room Persistance Lib  */
+    implementation "android.arch.persistence.room:runtime:$project.roomVersion"
+    implementation "android.arch.persistence.room:rxjava2:$project.roomVersion"
+    annotationProcessor "android.arch.persistence.room:compiler:$project.roomVersion"
 
     //test dependencies
     testImplementation 'junit:junit:4.12'
