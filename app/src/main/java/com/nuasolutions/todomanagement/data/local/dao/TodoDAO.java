@@ -17,5 +17,5 @@ public interface TodoDAO {
     long[] insertTodos(List<TodoEntity> todoEntityList);
     @Query("SELECT * FROM 'TodoEntity'")
     List<TodoEntity> getTodoList();
-    //TODO: add delete
+
 }

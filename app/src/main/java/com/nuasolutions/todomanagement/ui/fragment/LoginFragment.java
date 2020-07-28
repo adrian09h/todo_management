@@ -60,7 +60,11 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        activity.setTitle(getString(R.string.login_title));
+        initViewModel();
+        initViews();
+    }
+
+    private void initViewModel() {
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         mViewModel.getAccessToken().observe(this, resource -> {
             if (resource.isLoading()) {
@@ -83,7 +87,10 @@ public class LoginFragment extends BaseFragment {
                 }
             }
         });
+    }
 
+    private void initViews() {
+        activity.setTitle(getString(R.string.login_title));
         binding.setLoginEnabled(mViewModel.getLoginEnabled());
 
         binding.emailInput.setListener((text, isValid) -> {

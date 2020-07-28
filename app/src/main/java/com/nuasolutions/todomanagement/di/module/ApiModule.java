@@ -52,7 +52,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkhttpClient(Cache cache, NetworkInterceptor networkInterceptor, String token) {
+    OkHttpClient provideOkhttpClient(Cache cache, NetworkInterceptor networkInterceptor) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
