@@ -6,7 +6,7 @@
   <!-- Strings used for fragments for navigation -->
   <string name="splash_fragment_label">Splash Fragment</string>
   <string name="login_fragment_label">Login Fragment</string>
-  <string name="todos_fragment_label">TODOs Fragment</string>
+  <string name="todolist_fragment_label">TODOs Fragment</string>
   <string name="tododetail_fragment_label">TODODetail Fragment</string>
 
 

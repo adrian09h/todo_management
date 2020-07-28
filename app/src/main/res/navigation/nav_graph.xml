@@ -25,6 +25,22 @@
     android:name="com.nuasolutions.todomanagement.ui.fragment.LoginFragment"
     android:label="@string/login_fragment_label"
     tools:layout="@layout/fragment_login">
+    <action
+      android:id="@+id/action_Login_to_TodoList"
+      app:destination="@id/TodoListFragment"
+      app:enterAnim="@android:anim/fade_in"
+      app:exitAnim="@android:anim/fade_out"
+      app:popEnterAnim="@android:anim/fade_in"
+      app:popExitAnim="@android:anim/fade_out" />
+
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/TodoListFragment"
+    android:name="com.nuasolutions.todomanagement.ui.fragment.TodoListFragment"
+    android:label="@string/todolist_fragment_label"
+    tools:layout="@layout/fragment_todo_list">
 
 
   </fragment>

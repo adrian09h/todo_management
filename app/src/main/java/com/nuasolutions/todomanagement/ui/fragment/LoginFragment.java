@@ -7,17 +7,26 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.nuasolutions.todomanagement.BuildConfig;
 import com.nuasolutions.todomanagement.R;
+import com.nuasolutions.todomanagement.data.Resource;
+import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentLoginBinding;
+import com.nuasolutions.todomanagement.ui.MainActivity;
 import com.nuasolutions.todomanagement.utils.ContextUtils;
 import com.nuasolutions.todomanagement.viewmodel.LoginViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -55,7 +64,20 @@ public class LoginFragment extends BaseFragment {
         super.onActivityCreated(savedInstanceState);
         getActivity().setTitle(getString(R.string.login_title));
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
-        mViewModel.getAccessToken().observe(this, );
+        mViewModel.getAccessToken().observe(this, resource -> {
+            if (resource.isLoading()) {
+                //TODO: show loading
+            } else {
+                hideLoader();
+                if (!resource.data.isEmpty()) {
+                    String token = resource.data.get(0).getAccessToken();
+                    Log.d(LoginFragment.class.getSimpleName(), "token:" + token);
+                    gotoTODOListPage();
+                } else {
+                    handleErrorResponse(resource);
+                }
+            }
+        });
 
         binding.setLoginEnabled(mViewModel.getLoginEnabled());
 
@@ -73,6 +95,7 @@ public class LoginFragment extends BaseFragment {
 
         binding.loginButton.setOnClickListener(view -> {
             ContextUtils.hideKeyboard(activity);
+            displayLoader();
             mViewModel.login(emailAddress, password, true);
         });
 
@@ -84,6 +107,26 @@ public class LoginFragment extends BaseFragment {
             binding.emailInput.setText("tester1@email.com");
             binding.passwordInput.setText("tester1");
         }
+    }
+
+    private void handleErrorResponse(Resource<List<AccessTokenEntity>> resource) {
+        String error = resource.message;
+        showErrorSnack(error);
+    }
+
+    private void displayLoader() {
+        binding.loaderLayout.rootView.setVisibility(View.VISIBLE);
+        binding.loaderLayout.loader.start();
+    }
+
+    private void hideLoader() {
+        binding.loaderLayout.rootView.setVisibility(View.GONE);
+        binding.loaderLayout.loader.stop();
+    }
+
+    public void gotoTODOListPage() {
+        NavHostFragment.findNavController(LoginFragment.this)
+            .navigate(R.id.action_Login_to_TodoList);
     }
 
 }
