@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.nuasolutions.todomanagement.BuildConfig;
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.Resource;
+import com.nuasolutions.todomanagement.data.Status;
 import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentLoginBinding;
 import com.nuasolutions.todomanagement.ui.MainActivity;
@@ -72,7 +73,13 @@ public class LoginFragment extends BaseFragment {
                 if (!resource.data.isEmpty()) {
                     String token = resource.data.get(0).getAccessToken();
                     Log.d(LoginFragment.class.getSimpleName(), "token:" + token);
-                    gotoTODOListPage();
+                    if (resource.status != Status.SUCCESS) {
+                        //failed to get a response from server
+                        handleErrorResponse(resource);
+                    } else {
+                        //successfully got a response from server
+                        gotoTODOListPage();
+                    }
                 } else {
                     handleErrorResponse(resource);
                 }

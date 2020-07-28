@@ -60,7 +60,7 @@ public class AccessTokenRepository {
             protected Observable<Resource<AccessTokenResponse>> createCall() {
                 return apiService.doLogin(new LoginRequest(email, password))
                     .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
-                        ? Resource.error("", new AccessTokenResponse(""))
+                        ? Resource.error("Failed to login.", new AccessTokenResponse(""))
                         : Resource.success(accessTokenResponse)));
             }
         }.getAsObservable();
