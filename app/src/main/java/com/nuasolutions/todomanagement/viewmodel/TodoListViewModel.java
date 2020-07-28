@@ -26,7 +26,6 @@ public class TodoListViewModel extends BaseViewModel {
 
     @Inject
     public TodoListViewModel(TodoDAO todoDAO, TodoAPIService apiService) {
-        /* You can see we are initialising the MovieRepository class here */
         repository = new TodoRepository(todoDAO, apiService);
     }
 

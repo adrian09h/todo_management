@@ -7,11 +7,17 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 
 public interface TodoAPIService {
     @GET("/todos")
     Observable<List<TodoEntity>> fetchTodoList();
+
+//    @DELETE("/todos")
+//    Observable<List<TodoEntity>> deleteTodo(@Path(String todoId));
 
 }

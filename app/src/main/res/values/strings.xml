@@ -27,8 +27,8 @@
 
   <!-- TODO_List fragment -->
   <string name="todos_frag_title">TODO List</string>
-  <string name="empty_text">No TODO in the list</string>
+  <string name="empty_text">Nothing here. Try to add one!</string>
 
   <!-- TODO_Detail fragment -->
-
+  <string name="todo_item_label">TODO tasks</string>
 </resources>

@@ -8,35 +8,35 @@ import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import java.util.List;
 
 public class TodoDiffCallback extends DiffUtil.Callback {
-    private final List<TodoEntity> oldTodoList;
-    private final List<TodoEntity> newTodoList;
+    private final List<TodoEntity> mOldTodoList;
+    private final List<TodoEntity> mNewTodoList;
 
     public TodoDiffCallback(List<TodoEntity> oldList, List<TodoEntity> newList) {
-        this.oldTodoList = oldList;
-        this.newTodoList = newList;
+        this.mOldTodoList = oldList;
+        this.mNewTodoList = newList;
     }
 
     @Override
     public int getOldListSize() {
-        return oldTodoList.size();
+        return mOldTodoList.size();
     }
 
     @Override
     public int getNewListSize() {
-        return newTodoList.size();
+        return mNewTodoList.size();
     }
 
     @Override
     public boolean areItemsTheSame(int oldItemPosition, int newItemPosition) {
-        TodoEntity oldItem = oldTodoList.get(oldItemPosition);
-        TodoEntity newItem = newTodoList.get(newItemPosition);
+        TodoEntity oldItem = mOldTodoList.get(oldItemPosition);
+        TodoEntity newItem = mNewTodoList.get(newItemPosition);
         return oldItem.getId() == newItem.getId();
     }
 
     @Override
     public boolean areContentsTheSame(int oldItemPosition, int newItemPosition) {
-        TodoEntity oldItem = oldTodoList.get(oldItemPosition);
-        TodoEntity newItem = newTodoList.get(newItemPosition);
+        TodoEntity oldItem = mOldTodoList.get(oldItemPosition);
+        TodoEntity newItem = mNewTodoList.get(newItemPosition);
         if (!oldItem.getTitle().equals(newItem.getTitle())) {
             return false;
         }

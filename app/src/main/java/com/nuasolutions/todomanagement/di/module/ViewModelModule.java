@@ -4,6 +4,7 @@ package com.nuasolutions.todomanagement.di.module;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
 import com.nuasolutions.todomanagement.viewmodel.LoginViewModel;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
@@ -27,4 +28,9 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TodoListViewModel.class)
     protected abstract ViewModel todoListViewModel(TodoListViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TodoDetailViewModel.class)
+    protected abstract ViewModel todoDetailViewModel(TodoDetailViewModel viewModel);
 }

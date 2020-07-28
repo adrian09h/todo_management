@@ -6,8 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.util.Log;
@@ -35,11 +33,11 @@ public class LoginFragment extends BaseFragment {
     ViewModelFactory viewModelFactory;
 
     private LoginViewModel mViewModel;
-    private FragmentLoginBinding binding;
-    private String emailAddress = "";
-    private String password = "";
-    private boolean isValidEmail = false;
-    private boolean isValidPassword = false;
+    private FragmentLoginBinding mBinding;
+    private String mEmailAddress = "";
+    private String mPassword = "";
+    private boolean mIsValidEmail = false;
+    private boolean mIsValidPassword = false;
     public static LoginFragment newInstance() {
         return new LoginFragment();
     }
@@ -53,8 +51,8 @@ public class LoginFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        mBinding = FragmentLoginBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
@@ -90,33 +88,33 @@ public class LoginFragment extends BaseFragment {
 
     private void initViews() {
         activity.setTitle(getString(R.string.login_title));
-        binding.setLoginEnabled(mViewModel.getLoginEnabled());
+        mBinding.setLoginEnabled(mViewModel.getLoginEnabled());
 
-        binding.emailInput.setListener((text, isValid) -> {
-            emailAddress = text;
-            isValidEmail = isValid;
-            mViewModel.setLoginEnabled(isValidEmail && isValidPassword);
+        mBinding.emailInput.setListener((text, isValid) -> {
+            mEmailAddress = text;
+            mIsValidEmail = isValid;
+            mViewModel.setLoginEnabled(mIsValidEmail && mIsValidPassword);
         });
 
-        binding.passwordInput.setListener((text, isValid) -> {
-            password = text;
-            isValidPassword = isValid;
-            mViewModel.setLoginEnabled(isValidEmail && isValidPassword);
+        mBinding.passwordInput.setListener((text, isValid) -> {
+            mPassword = text;
+            mIsValidPassword = isValid;
+            mViewModel.setLoginEnabled(mIsValidEmail && mIsValidPassword);
         });
 
-        binding.loginButton.setOnClickListener(view -> {
+        mBinding.loginButton.setOnClickListener(view -> {
             ContextUtils.hideKeyboard(activity);
             displayLoader();
-            mViewModel.login(emailAddress, password, true);
+            mViewModel.login(mEmailAddress, mPassword, true);
         });
 
-        binding.gosignup.setOnClickListener(view -> {
+        mBinding.gosignup.setOnClickListener(view -> {
 
         });
 
         if (BuildConfig.DEBUG) {
-            binding.emailInput.setText("tester1@email.com");
-            binding.passwordInput.setText("tester1");
+            mBinding.emailInput.setText("tester1@email.com");
+            mBinding.passwordInput.setText("tester1");
         }
     }
 

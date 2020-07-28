@@ -4,9 +4,10 @@ import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +16,9 @@ import android.view.ViewGroup;
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.Status;
-import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoListBinding;
+import com.nuasolutions.todomanagement.interfaces.OnTodoItemClickListener;
 import com.nuasolutions.todomanagement.ui.adapter.TodoListAdapter;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
@@ -27,13 +28,13 @@ import java.util.List;
 import javax.inject.Inject;
 import dagger.android.support.AndroidSupportInjection;
 
-public class TodoListFragment extends BaseFragment {
+public class TodoListFragment extends BaseFragment implements OnTodoItemClickListener {
     @Inject
     ViewModelFactory viewModelFactory;
 
     private TodoListViewModel mViewModel;
-    private FragmentTodoListBinding binding;
-    private TodoListAdapter todoListAdapter;
+    private FragmentTodoListBinding mBinding;
+    private TodoListAdapter mTodoListAdapter;
 
     public static TodoListFragment newInstance() {
         return new TodoListFragment();
@@ -48,8 +49,8 @@ public class TodoListFragment extends BaseFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        binding = FragmentTodoListBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+        mBinding = FragmentTodoListBinding.inflate(inflater, container, false);
+        return mBinding.getRoot();
     }
 
     @Override
@@ -74,7 +75,7 @@ public class TodoListFragment extends BaseFragment {
                     } else {
                         //successfully got a response from server
                     }
-                    todoListAdapter.setTodoList(resource.data);
+                    mTodoListAdapter.setTodoList(resource.data);
                 } else {
                     handleErrorResponse(resource);
                 }
@@ -84,13 +85,13 @@ public class TodoListFragment extends BaseFragment {
 
     private void initViews() {
         activity.setTitle(getString(R.string.todos_frag_title));
-        binding.setEmptyVisiblity(mViewModel.getEmptyVisibility());
-        binding.setListVisiblity(mViewModel.getListVisibility());
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerView.setHasFixedSize(true);
-        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        todoListAdapter = new TodoListAdapter();
-        binding.recyclerView.setAdapter(todoListAdapter);
+        mBinding.setEmptyVisiblity(mViewModel.getEmptyVisibility());
+        mBinding.setListVisiblity(mViewModel.getListVisibility());
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.recyclerView.setHasFixedSize(true);
+        mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mTodoListAdapter = new TodoListAdapter(this);
+        mBinding.recyclerView.setAdapter(mTodoListAdapter);
     }
 
     private void handleErrorResponse(Resource<List<TodoEntity>> resource) {
@@ -98,4 +99,11 @@ public class TodoListFragment extends BaseFragment {
         showErrorSnack(error);
     }
 
+    @Override
+    public void onItemClicked(TodoEntity todoEntity) {
+        //open detail view
+        TodoListFragmentDirections.ActionTodoListToDetail action =
+            TodoListFragmentDirections.actionTodoListToDetail(todoEntity);
+        NavHostFragment.findNavController(this).navigate(action);
+    }
 }

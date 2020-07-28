@@ -42,6 +42,25 @@
     android:label="@string/todolist_fragment_label"
     tools:layout="@layout/fragment_todo_list">
 
+    <action
+      android:id="@+id/action_TodoList_to_Detail"
+      app:destination="@id/TodoDetailFragment"
+      app:enterAnim="@android:anim/slide_in_left"
+      app:exitAnim="@android:anim/slide_out_right"
+      app:popEnterAnim="@android:anim/slide_in_left"
+      app:popExitAnim="@android:anim/slide_out_right" >
+    </action>
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/TodoDetailFragment"
+    android:name="com.nuasolutions.todomanagement.ui.fragment.TodoDetailFragment"
+    android:label="@string/tododetail_fragment_label"
+    tools:layout="@layout/fragment_todo_detail">
+    <argument
+      android:name="todo_data"
+      app:argType="com.nuasolutions.todomanagement.data.local.entity.TodoEntity"/>
 
   </fragment>
 
