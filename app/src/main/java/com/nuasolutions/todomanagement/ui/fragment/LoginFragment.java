@@ -68,7 +68,6 @@ public class LoginFragment extends BaseFragment {
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         mViewModel.getAccessToken().observe(this, resource -> {
             if (resource.isLoading()) {
-                //TODO: show loading
             } else {
                 hideLoader();
                 if (!resource.data.isEmpty()) {

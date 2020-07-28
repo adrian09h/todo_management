@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import com.nuasolutions.todomanagement.data.Status;
 import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoListBinding;
+import com.nuasolutions.todomanagement.ui.adapter.TodoListAdapter;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
@@ -29,6 +33,7 @@ public class TodoListFragment extends BaseFragment {
 
     private TodoListViewModel mViewModel;
     private FragmentTodoListBinding binding;
+    private TodoListAdapter todoListAdapter;
 
     public static TodoListFragment newInstance() {
         return new TodoListFragment();
@@ -50,13 +55,16 @@ public class TodoListFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        activity.setTitle(getString(R.string.todos_frag_title));
+        initViewModel();
+        initViews();
+        displayLoader();
+        mViewModel.loadTodoList();
+    }
+
+    private void initViewModel() {
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TodoListViewModel.class);
-        binding.setEmptyVisiblity(mViewModel.getEmptyVisibility());
-        binding.setListVisiblity(mViewModel.getListVisibility());
         mViewModel.getTodoListLiveData().observe(this, resource -> {
             if (resource.isLoading()) {
-                //TODO: show loading
             } else {
                 hideLoader();
                 if (!resource.data.isEmpty()) {
@@ -66,13 +74,23 @@ public class TodoListFragment extends BaseFragment {
                     } else {
                         //successfully got a response from server
                     }
-                    
+                    todoListAdapter.setTodoList(resource.data);
                 } else {
                     handleErrorResponse(resource);
                 }
             }
         });
-        mViewModel.loadTodoList();
+    }
+
+    private void initViews() {
+        activity.setTitle(getString(R.string.todos_frag_title));
+        binding.setEmptyVisiblity(mViewModel.getEmptyVisibility());
+        binding.setListVisiblity(mViewModel.getListVisibility());
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recyclerView.setHasFixedSize(true);
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        todoListAdapter = new TodoListAdapter();
+        binding.recyclerView.setAdapter(todoListAdapter);
     }
 
     private void handleErrorResponse(Resource<List<TodoEntity>> resource) {

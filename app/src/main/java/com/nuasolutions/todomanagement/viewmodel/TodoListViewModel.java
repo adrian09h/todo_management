@@ -1,5 +1,6 @@
 package com.nuasolutions.todomanagement.viewmodel;
 
+import android.annotation.SuppressLint;
 import android.view.View;
 
 import androidx.databinding.ObservableBoolean;
@@ -19,7 +20,7 @@ import javax.inject.Inject;
 
 public class TodoListViewModel extends BaseViewModel {
     private ObservableInt emptyVisibility = new ObservableInt(View.GONE);
-    private ObservableInt listVisibility = new ObservableInt(View.VISIBLE);
+    private ObservableInt listVisibility = new ObservableInt(View.GONE);
     private TodoRepository repository;
     private MutableLiveData<Resource<List<TodoEntity>>> todoListLiveData = new MutableLiveData<>();
 
@@ -29,9 +30,16 @@ public class TodoListViewModel extends BaseViewModel {
         repository = new TodoRepository(todoDAO, apiService);
     }
 
+    @SuppressLint("CheckResult")
     public void loadTodoList() {
         repository.loadTodoList()
-            .subscribe(resource -> todoListLiveData.postValue(resource));
+            .subscribe(resource -> {
+                todoListLiveData.postValue(resource);
+                if (!resource.data.isEmpty()) {
+                    emptyVisibility.set(View.GONE);
+                    listVisibility.set(View.VISIBLE);
+                }
+            });
     }
 
     public ObservableInt getEmptyVisibility() {
