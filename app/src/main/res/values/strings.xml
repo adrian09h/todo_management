@@ -30,5 +30,6 @@
   <string name="empty_text">Nothing here. Try to add one!</string>
 
   <!-- TODO_Detail fragment -->
+  <string name="todos_detail_title">TODO Detail</string>
   <string name="todo_item_label">TODO tasks</string>
 </resources>

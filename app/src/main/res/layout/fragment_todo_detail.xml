@@ -32,7 +32,7 @@
       android:textColor="@android:color/black"
       android:textStyle="bold"
       android:layout_alignParentTop="true"
-      android:layout_marginTop="@dimen/_12sdp"
+      android:layout_marginTop="@dimen/_14sdp"
       />
     <TextView
       android:id="@+id/todo_items_label"
@@ -43,13 +43,13 @@
       android:textColor="@android:color/black"
       android:textStyle="bold"
       android:layout_below="@+id/todo_title"
-      android:layout_marginTop="@dimen/_12sdp"
+      android:layout_marginTop="@dimen/_14sdp"
       />
     <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_below="@+id/todo_items_label"
-      android:layout_marginTop="@dimen/_12sdp"
+      android:layout_marginTop="@dimen/_8sdp"
       android:layout_marginBottom="@dimen/_12sdp">
       <include
         android:id="@+id/empty_layout"

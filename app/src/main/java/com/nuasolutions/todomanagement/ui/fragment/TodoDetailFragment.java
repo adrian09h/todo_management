@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoDetailBinding;
 import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
@@ -21,7 +22,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class TodoDetailFragment extends Fragment {
+public class TodoDetailFragment extends BaseFragment {
     @Inject
     ViewModelFactory viewModelFactory;
     private TodoDetailViewModel mViewModel;
@@ -54,10 +55,21 @@ public class TodoDetailFragment extends Fragment {
 
     private void initViewModel() {
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(TodoDetailViewModel.class);
+        if (mTodoEntity.getItemList().isEmpty()) {
+            mViewModel.setmEmptyVisiblity(View.VISIBLE);
+            mViewModel.setmListVisibility(View.GONE);
+        } else {
+            mViewModel.setmEmptyVisiblity(View.GONE);
+            mViewModel.setmListVisibility(View.VISIBLE);
+        }
+
     }
 
     private void initViews() {
+        activity.setTitle(getString(R.string.todos_detail_title));
         mBinding.setTodoEntity(mTodoEntity);
+        mBinding.setEmptyVisiblity(mViewModel.getmEmptyVisiblity());
+        mBinding.setListVisiblity(mViewModel.getmListVisibility());
     }
 
 }
