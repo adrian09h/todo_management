@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.nuasolutions.todomanagement.viewmodel.LoginViewModel;
+import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
 import dagger.Binds;
@@ -20,6 +21,10 @@ public abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(LoginViewModel.class)
-    protected abstract ViewModel movieListViewModel(LoginViewModel loginViewModel);
+    protected abstract ViewModel loginViewModel(LoginViewModel viewModel);
 
+    @Binds
+    @IntoMap
+    @ViewModelKey(TodoListViewModel.class)
+    protected abstract ViewModel todoListViewModel(TodoListViewModel viewModel);
 }

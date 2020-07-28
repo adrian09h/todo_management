@@ -11,10 +11,10 @@
 
 
 
-  <!-- Splash fragments -->
+  <!-- Splash fragment -->
   <string name="splash_title">TODO\nManagement</string>
 
-  <!-- Login fragments -->
+  <!-- Login fragment -->
   <string name="login_title">Login</string>
   <string name="email">Email Address</string>
   <string name="email_hint">enter email address</string>
@@ -25,11 +25,10 @@
   <string name="err_pwd_invalid">length should be 6 at least</string>
   <string name="login">Log In</string>
 
-  <!-- TODOs fragments -->
+  <!-- TODO_List fragment -->
   <string name="todos_frag_title">TODO List</string>
-  <string name="hello_first_fragment">Hello first fragment</string>
-  <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+  <string name="empty_text">No TODO in the list</string>
 
-  <!-- TODO_Detail fragments -->
+  <!-- TODO_Detail fragment -->
 
 </resources>

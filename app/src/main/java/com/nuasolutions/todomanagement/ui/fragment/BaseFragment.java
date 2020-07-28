@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.nuasolutions.todomanagement.ui.MainActivity;
 
 public class BaseFragment extends Fragment {
+    public static String tempToken = "";
     protected MainActivity activity;
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

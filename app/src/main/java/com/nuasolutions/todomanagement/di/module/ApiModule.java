@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.nuasolutions.todomanagement.BuildConfig;
+import com.nuasolutions.todomanagement.data.remote.api.TodoAPIService;
 import com.nuasolutions.todomanagement.data.remote.interceptor.NetworkInterceptor;
 import com.nuasolutions.todomanagement.data.remote.interceptor.RequestInterceptor;
 import com.nuasolutions.todomanagement.data.remote.api.OnboardingAPIService;
@@ -51,7 +52,7 @@ public class ApiModule {
 
     @Provides
     @Singleton
-    OkHttpClient provideOkhttpClient(Cache cache, NetworkInterceptor networkInterceptor) {
+    OkHttpClient provideOkhttpClient(Cache cache, NetworkInterceptor networkInterceptor, String token) {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -80,6 +81,12 @@ public class ApiModule {
     @Singleton
     OnboardingAPIService provideOnboardingApiService(Retrofit retrofit) {
         return retrofit.create(OnboardingAPIService.class);
+    }
+
+    @Provides
+    @Singleton
+    TodoAPIService provideTodoApiService(Retrofit retrofit) {
+        return retrofit.create(TodoAPIService.class);
     }
 
 }

@@ -14,15 +14,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.nuasolutions.todomanagement.BuildConfig;
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.Status;
 import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentLoginBinding;
-import com.nuasolutions.todomanagement.ui.MainActivity;
 import com.nuasolutions.todomanagement.utils.ContextUtils;
 import com.nuasolutions.todomanagement.viewmodel.LoginViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
@@ -63,7 +60,7 @@ public class LoginFragment extends BaseFragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getActivity().setTitle(getString(R.string.login_title));
+        activity.setTitle(getString(R.string.login_title));
         mViewModel = ViewModelProviders.of(this, viewModelFactory).get(LoginViewModel.class);
         mViewModel.getAccessToken().observe(this, resource -> {
             if (resource.isLoading()) {
@@ -78,6 +75,7 @@ public class LoginFragment extends BaseFragment {
                         handleErrorResponse(resource);
                     } else {
                         //successfully got a response from server
+                        BaseFragment.tempToken = token;
                         gotoTODOListPage();
                     }
                 } else {
