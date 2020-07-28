@@ -6,7 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,9 @@ import android.view.ViewGroup;
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoDetailBinding;
+import com.nuasolutions.todomanagement.interfaces.OnItemLongClickListener;
+import com.nuasolutions.todomanagement.ui.adapter.TodoTasklListAdapter;
+import com.nuasolutions.todomanagement.ui.adapter.TodoListAdapter;
 import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
@@ -22,12 +26,13 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class TodoDetailFragment extends BaseFragment {
+public class TodoDetailFragment extends BaseFragment implements OnItemLongClickListener {
     @Inject
     ViewModelFactory viewModelFactory;
     private TodoDetailViewModel mViewModel;
     private FragmentTodoDetailBinding mBinding;
     private TodoEntity mTodoEntity;
+    private TodoTasklListAdapter mAdapter;
 
     public static TodoDetailFragment newInstance() {
         return new TodoDetailFragment();
@@ -62,7 +67,6 @@ public class TodoDetailFragment extends BaseFragment {
             mViewModel.setmEmptyVisiblity(View.GONE);
             mViewModel.setmListVisibility(View.VISIBLE);
         }
-
     }
 
     private void initViews() {
@@ -70,6 +74,17 @@ public class TodoDetailFragment extends BaseFragment {
         mBinding.setTodoEntity(mTodoEntity);
         mBinding.setEmptyVisiblity(mViewModel.getmEmptyVisiblity());
         mBinding.setListVisiblity(mViewModel.getmListVisibility());
+
+        mBinding.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mBinding.recyclerView.setHasFixedSize(true);
+        mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        mAdapter = new TodoTasklListAdapter(this);
+        mBinding.recyclerView.setAdapter(mAdapter);
+        mAdapter.setTodoTaskList(mTodoEntity.getItemList());
     }
 
+    @Override
+    public void onItemLongClicked(Long id) {
+
+    }
 }

@@ -7,9 +7,24 @@ import androidx.room.Entity;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity(primaryKeys = ("id"))
 public class TodoItemEntity implements Parcelable{
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TodoItemEntity that = (TodoItemEntity) o;
+        return todo_id == that.todo_id &&
+            id == id &&
+            name.equals(that.name) &&
+            created_at.equals(that.created_at) &&
+            updated_at.equals(that.updated_at) &&
+            created_at.equals(that.created_at) &&
+            (!(done ^ that.done));
+    }
+
     @SerializedName("id")
     public Long id;
 
