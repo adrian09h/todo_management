@@ -15,6 +15,9 @@ import java.util.List;
 public interface TodoDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertTodos(List<TodoEntity> todoEntityList);
+    @Delete
+    void delete(TodoEntity todoEntity);
+
     @Query("SELECT * FROM 'TodoEntity'")
     List<TodoEntity> getTodoList();
 
