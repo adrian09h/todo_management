@@ -114,16 +114,6 @@ public class LoginFragment extends BaseFragment {
         showErrorSnack(error);
     }
 
-    private void displayLoader() {
-        binding.loaderLayout.rootView.setVisibility(View.VISIBLE);
-        binding.loaderLayout.loader.start();
-    }
-
-    private void hideLoader() {
-        binding.loaderLayout.rootView.setVisibility(View.GONE);
-        binding.loaderLayout.loader.stop();
-    }
-
     public void gotoTODOListPage() {
         NavHostFragment.findNavController(LoginFragment.this)
             .navigate(R.id.action_Login_to_TodoList);

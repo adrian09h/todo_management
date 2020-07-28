@@ -46,4 +46,12 @@ public class MainActivity extends AppCompatActivity implements HasSupportFragmen
     public void showAppBar() {
         appBarLayout.setVisibility(View.VISIBLE);
     }
+
+    public void showLoading() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideLoading() {
+        binding.progressBar.setVisibility(View.GONE);
+    }
 }

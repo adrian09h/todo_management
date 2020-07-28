@@ -1,5 +1,6 @@
 package com.nuasolutions.todomanagement.ui.fragment;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.View;
 
@@ -21,5 +22,13 @@ public class BaseFragment extends Fragment {
         Snackbar snackBar = Snackbar.make(activity.findViewById(android.R.id.content),
             errMsg, Snackbar.LENGTH_SHORT);
         snackBar.show();
+    }
+
+    protected void displayLoader() {
+        activity.showLoading();
+    }
+
+    protected void hideLoader() {
+        activity.hideLoading();
     }
 }
