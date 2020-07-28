@@ -1,4 +1,4 @@
-package com.nuasolutions.todomanagement.ui;
+package com.nuasolutions.todomanagement.ui.fragment;
 
 import android.annotation.SuppressLint;
 

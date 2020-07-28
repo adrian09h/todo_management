@@ -1,4 +1,4 @@
-package com.nuasolutions.todomanagement.model.requests;
+package com.nuasolutions.todomanagement.data.remote.model.requests;
 
 import com.google.gson.annotations.SerializedName;
 

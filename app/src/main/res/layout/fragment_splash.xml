@@ -5,7 +5,7 @@
   android:layout_height="match_parent"
   android:background="@android:color/white"
   android:id="@+id/contentView"
-  tools:context=".ui.SplashFragment">
+  tools:context=".ui.fragment.SplashFragment">
 
 
   <TextView

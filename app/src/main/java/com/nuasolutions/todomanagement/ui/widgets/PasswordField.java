@@ -51,23 +51,33 @@ public class PasswordField extends androidx.appcompat.widget.AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                password = editable.toString();
-                isValid = CommonUtils.validatePassword(password);
-                if (!isValid) {
-                    PasswordField.this.setError(context.getString(R.string.err_pwd_invalid));
-                } else {
-                    PasswordField.this.setError(null);
-                }
-                if (TextUtils.isEmpty(password)) {
-                    PasswordField.this.setError(null);
-                }
-                if (listener != null) {
-                    listener.onTextChanged(password, isValid);
-                }
+                checkChangedText();
             }
         });
     }
     public void setListener(TextChangedListener listener) {
         this.listener = listener;
+    }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        checkChangedText();
+    }
+
+    private void checkChangedText() {
+        password = getText().toString();
+        isValid = CommonUtils.validatePassword(password);
+        if (!isValid) {
+            PasswordField.this.setError(getContext().getString(R.string.err_pwd_invalid));
+        } else {
+            PasswordField.this.setError(null);
+        }
+        if (TextUtils.isEmpty(password)) {
+            PasswordField.this.setError(null);
+        }
+        if (listener != null) {
+            listener.onTextChanged(password, isValid);
+        }
     }
 }

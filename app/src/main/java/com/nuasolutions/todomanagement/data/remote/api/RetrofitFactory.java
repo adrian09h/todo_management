@@ -1,8 +1,10 @@
-package com.nuasolutions.todomanagement.api;
+package com.nuasolutions.todomanagement.data.remote.api;
 
 import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
+
+import com.nuasolutions.todomanagement.BuildConfig;
 
 import java.util.concurrent.TimeUnit;
 
@@ -15,17 +17,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class RetrofitFactory {
     private static final long READ_TIME_OUT = 15;
     private static final long CONNECTION_TIME_OUT = 15;
-    private static APIService noAuthService;
-    private static APIService authService;
-    public static APIService getAPIService(@Nullable String token) {
+    private static OnboardingAPIService noAuthService;
+    private static OnboardingAPIService authService;
+    public static OnboardingAPIService getAPIService(@Nullable String token) {
         if (TextUtils.isEmpty(token)) {
             if (noAuthService == null) {
-                noAuthService = createRetrofitClient().create(APIService.class);
+                noAuthService = createRetrofitClient().create(OnboardingAPIService.class);
             }
             return noAuthService;
         } else {
             if (authService == null) {
-                authService = createAuthRetrofitClient(token).create(APIService.class);
+                authService = createAuthRetrofitClient(token).create(OnboardingAPIService.class);
             }
             return authService;
         }
@@ -42,7 +44,7 @@ public class RetrofitFactory {
             .addInterceptor(noAuthInterceptor())
             .build();
         return new Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BuildConfig.apiBaseURL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build();
@@ -59,7 +61,7 @@ public class RetrofitFactory {
             .addInterceptor(authHeaderInterceptor(token))
             .build();
         return new Retrofit.Builder()
-            .baseUrl("")
+            .baseUrl(BuildConfig.apiBaseURL)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttpClient)
             .build();

@@ -1,4 +1,4 @@
-package com.nuasolutions.todomanagement.model.requests;
+package com.nuasolutions.todomanagement.data.remote.model.requests;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -9,7 +9,7 @@ public class LoginRequest {
     @SerializedName("password")
     public String password;
 
-    LoginRequest(String email, String password) {
+    public LoginRequest(String email, String password) {
         this.email = email;
         this.password = password;
     }

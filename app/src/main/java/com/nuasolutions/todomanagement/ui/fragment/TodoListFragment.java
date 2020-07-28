@@ -1,4 +1,4 @@
-package com.nuasolutions.todomanagement.ui;
+package com.nuasolutions.todomanagement.ui.fragment;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 
-public class TodoListFragment extends Fragment {
+public class TodoListFragment extends BaseFragment {
 
     private TodoListViewModel mViewModel;
 

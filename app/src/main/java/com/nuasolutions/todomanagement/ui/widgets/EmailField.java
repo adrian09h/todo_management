@@ -40,7 +40,6 @@ public class EmailField extends androidx.appcompat.widget.AppCompatEditText {
     public EmailField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs, defStyleAttr);
-
     }
 
     @Override
@@ -62,22 +61,33 @@ public class EmailField extends androidx.appcompat.widget.AppCompatEditText {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                emailAddress = editable.toString();
-                isValid = CommonUtils.validateEmail(emailAddress);
-                if (!isValid) {
-                    EmailField.this.setError(context.getString(R.string.err_email_invalid));
-                } else {
-                    EmailField.this.setError(null);
-                }
-                if (TextUtils.isEmpty(emailAddress)) {
-                    EmailField.this.setError(null);
-                }
-                if (listener != null) {
-                    listener.onTextChanged(emailAddress, isValid);
-                }
+                checkChangedText();
             }
         });
     }
+
+    @Override
+    public void setText(CharSequence text, BufferType type) {
+        super.setText(text, type);
+        checkChangedText();
+    }
+
+    private void checkChangedText() {
+        emailAddress = getText().toString();
+        isValid = CommonUtils.validateEmail(emailAddress);
+        if (!isValid) {
+            EmailField.this.setError(getContext().getString(R.string.err_email_invalid));
+        } else {
+            EmailField.this.setError(null);
+        }
+        if (TextUtils.isEmpty(emailAddress)) {
+            EmailField.this.setError(null);
+        }
+        if (listener != null) {
+            listener.onTextChanged(emailAddress, isValid);
+        }
+    }
+
     public void setListener(TextChangedListener listener) {
         this.listener = listener;
     }
