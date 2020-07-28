@@ -2,31 +2,20 @@
 
 ## Libraries and tools included:
 
-Support libraries
-
-RxJava and RxAndroid
-
-Retrofit 2
-
-Dagger 2
-
-Room
-
-DataBidning
-
-RecyclerViews and CardViews
-
-DiffUtil
-
-Navigation Graph
+- Support libraries
+- RxJava and RxAndroid
+- Retrofit 2
+- Dagger 2
+- Room
+- DataBidning
+- RecyclerViews and CardViews
+- DiffUtil
+- Navigation Graph
 
 ## Requirements
-
-JDK 1.8
-
-Android SDK
-
-Latest Android SDK Tools and build tools
+- JDK 1.8
+- Android SDK
+- Latest Android SDK Tools and build tools
 
 ## Architecture
 
