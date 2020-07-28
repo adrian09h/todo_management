@@ -1,0 +1,35 @@
+<resources>
+  <string name="app_name">TODO</string>
+  <string name="action_settings">Settings</string>
+
+
+  <!-- Strings used for fragments for navigation -->
+  <string name="splash_fragment_label">Splash Fragment</string>
+  <string name="login_fragment_label">Login Fragment</string>
+  <string name="todos_fragment_label">TODOs Fragment</string>
+  <string name="tododetail_fragment_label">TODODetail Fragment</string>
+
+
+
+  <!-- Splash fragments -->
+  <string name="splash_title">TODO\nManagement</string>
+
+  <!-- Login fragments -->
+  <string name="login_title">Login</string>
+  <string name="email">Email Address</string>
+  <string name="email_hint">enter email address</string>
+  <string name="password">Password</string>
+  <string name="password_hint">enter password</string>
+  <string name="go_signup">Sign Up -> </string>
+  <string name="err_email_invalid">invalid email address</string>
+  <string name="err_pwd_invalid">length should be 6 at least</string>
+  <string name="login">Log In</string>
+
+  <!-- TODOs fragments -->
+  <string name="todos_frag_title">TODO List</string>
+  <string name="hello_first_fragment">Hello first fragment</string>
+  <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+  <!-- TODO_Detail fragments -->
+
+</resources>
