@@ -61,8 +61,8 @@ public class ApiModule {
         httpClient.addInterceptor(networkInterceptor);
         httpClient.addInterceptor(logging);
         httpClient.addNetworkInterceptor(new RequestInterceptor());
-        httpClient.connectTimeout(30, TimeUnit.SECONDS);
-        httpClient.readTimeout(30, TimeUnit.SECONDS);
+        httpClient.connectTimeout(10, TimeUnit.SECONDS);
+        httpClient.readTimeout(10, TimeUnit.SECONDS);
         return httpClient.build();
     }
 
