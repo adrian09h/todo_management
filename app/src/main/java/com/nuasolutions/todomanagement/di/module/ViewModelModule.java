@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.nuasolutions.todomanagement.viewmodel.SignupViewModel;
+import com.nuasolutions.todomanagement.viewmodel.SplashViewModel;
 import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
 import com.nuasolutions.todomanagement.viewmodel.LoginViewModel;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
@@ -39,4 +40,9 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SignupViewModel.class)
     protected abstract ViewModel signupViewModel(SignupViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SplashViewModel.class)
+    protected abstract ViewModel splashViewModel(SplashViewModel viewModel);
 }

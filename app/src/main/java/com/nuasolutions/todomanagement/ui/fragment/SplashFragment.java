@@ -7,17 +7,25 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
 import com.nuasolutions.todomanagement.R;
+import com.nuasolutions.todomanagement.viewmodel.SplashViewModel;
+import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
+
+import javax.inject.Inject;
+
+import dagger.android.support.AndroidSupportInjection;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -25,6 +33,9 @@ import com.nuasolutions.todomanagement.R;
  */
 public class SplashFragment extends Fragment {
 
+    @Inject
+    ViewModelFactory viewModelFactory;
+    private SplashViewModel mViewModel;
     private final int DELAY_MILLIS = 3000;
     private final Handler mHideHandler = new Handler();
     private View mContentView;
@@ -35,12 +46,22 @@ public class SplashFragment extends Fragment {
                 new Runnable() {
                     @Override
                     public void run() {
-                        goNext();
+                        if (BaseFragment.tempToken.isEmpty()) {
+                            gotoLogin();
+                        } else  {
+                            gotoTodolist();
+                        }
                     }
                 }
             );
         }
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AndroidSupportInjection.inject(this);
+    }
 
     @Nullable
     @Override
@@ -54,6 +75,25 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mContentView = view.findViewById(R.id.contentView);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mViewModel = ViewModelProviders.of(this, viewModelFactory).get(SplashViewModel.class);
+        mViewModel.getAccessTokenLiveData().observe(this, resource -> {
+            if (resource.isLoading()) {
+            } else {
+                if (!resource.data.isEmpty()) {
+                    String token = resource.data.get(0).getAccessToken();
+                    Log.d(LoginFragment.class.getSimpleName(), "token:" + token);
+                    BaseFragment.tempToken = token;
+                } else {
+
+                }
+            }
+        });
+        mViewModel.checkAccessToken();
     }
 
     @Override
@@ -84,9 +124,14 @@ public class SplashFragment extends Fragment {
         mContentView = null;
     }
 
-    private void goNext() {
+    private void gotoLogin() {
         NavHostFragment.findNavController(SplashFragment.this)
             .navigate(R.id.action_Splash_to_Login);
+    }
+
+    private void gotoTodolist() {
+        NavHostFragment.findNavController(SplashFragment.this)
+            .navigate(R.id.action_Splash_to_TodoList);
     }
 
     private void hide() {

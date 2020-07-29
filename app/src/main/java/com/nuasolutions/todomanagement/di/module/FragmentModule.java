@@ -2,6 +2,7 @@ package com.nuasolutions.todomanagement.di.module;
 
 import com.nuasolutions.todomanagement.ui.fragment.LoginFragment;
 import com.nuasolutions.todomanagement.ui.fragment.SignupFragment;
+import com.nuasolutions.todomanagement.ui.fragment.SplashFragment;
 import com.nuasolutions.todomanagement.ui.fragment.TodoDetailFragment;
 import com.nuasolutions.todomanagement.ui.fragment.TodoListFragment;
 
@@ -22,5 +23,8 @@ public abstract class FragmentModule {
 
     @ContributesAndroidInjector
     abstract SignupFragment contributeSignupFragment();
+
+    @ContributesAndroidInjector
+    abstract SplashFragment contributeSplashFragment();
 
 }
