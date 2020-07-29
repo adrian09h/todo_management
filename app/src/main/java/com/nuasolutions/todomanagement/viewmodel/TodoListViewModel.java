@@ -40,18 +40,14 @@ public class TodoListViewModel extends BaseViewModel {
     public void loadTodoList() {
         repository.loadTodoList()
             .switchIfEmpty(emptyResource())
-            .subscribe(resource -> {
-                postResult(resource);
-            });
+            .subscribe(this::postResult);
     }
 
     @SuppressLint("CheckResult")
     public void deleteTodo(Long todoId) {
         repository.deleteTodo(todoId)
             .switchIfEmpty(emptyResource())
-            .subscribe(resource -> {
-                postResult(resource);
-            });
+            .subscribe(this::postResult);
     }
 
     @SuppressLint("CheckResult")

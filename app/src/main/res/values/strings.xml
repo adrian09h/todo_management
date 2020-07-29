@@ -39,4 +39,7 @@
   <!-- TODO_Detail fragment -->
   <string name="todos_detail_title">TODO Detail</string>
   <string name="todo_item_label">TODO tasks</string>
+  <string name="add_newtask_dlg_title">Add a new TODO task</string>
+  <string name="add_newtask_dlg_message">Enter task name here.</string>
+  <string name="add">ADD</string>
 </resources>

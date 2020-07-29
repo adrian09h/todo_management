@@ -8,6 +8,7 @@ import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.local.dao.TodoDAO;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.data.remote.api.TodoAPIService;
+import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoItemRequest;
 import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoRequest;
 
 import java.util.List;
@@ -90,9 +91,43 @@ public class TodoRepository {
             @Override
             protected Observable<Resource<TodoEntity>> createCall() {
                 return apiService.createTodo(new CreateTodoRequest(title))
-                    .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
+                    .flatMap(response -> Observable.just(response == null
                         ? Resource.error("Failed to create TODO.", null)
-                        : Resource.success(accessTokenResponse)));
+                        : Resource.success(response)));
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<TodoEntity>> updateTodo(TodoEntity todoEntity) {
+        return new NetworkBoundResource<TodoEntity, TodoEntity>() {
+
+            @Override
+            protected void saveCallResult(@NonNull TodoEntity response) {
+                todoDAO.insertOneTodo(todoEntity);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<TodoEntity> loadFromDb() {
+                TodoEntity entitity = todoDAO.getTodoById(todoEntity.getId());
+                if(entitity == null) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entitity);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<TodoEntity>> createCall() {
+                return apiService.updateTodo(todoEntity.getId(), todoEntity)
+                    .flatMap(response -> Observable.just(response == null
+                        ? Resource.error("Failed to create TODO.", null)
+                        : Resource.success(response)));
             }
         }.getAsObservable();
     }
@@ -131,4 +166,39 @@ public class TodoRepository {
             }
         }.getAsObservable();
     }
+
+    public Observable<Resource<TodoEntity>> createTodoItem(Long todoId, String name, boolean done) {
+        return new NetworkBoundResource<TodoEntity, TodoEntity>() {
+
+            @Override
+            protected void saveCallResult(@NonNull TodoEntity response) {
+                todoDAO.insertOneTodo(response);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<TodoEntity> loadFromDb() {
+                TodoEntity entitity = todoDAO.getTodoById(todoId);
+                if(entitity == null) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entitity);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<TodoEntity>> createCall() {
+                return apiService.createTodoItem(todoId, new CreateTodoItemRequest(name, done))
+                    .flatMap(response -> Observable.just(response == null
+                        ? Resource.error("Failed to create TODO.", null)
+                        : Resource.success(response)));
+            }
+        }.getAsObservable();
+    }
+
 }

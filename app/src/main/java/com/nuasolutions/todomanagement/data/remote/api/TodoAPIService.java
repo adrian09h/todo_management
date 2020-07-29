@@ -1,6 +1,8 @@
 package com.nuasolutions.todomanagement.data.remote.api;
 
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
+import com.nuasolutions.todomanagement.data.local.entity.TodoItemEntity;
+import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoItemRequest;
 import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoRequest;
 
 
@@ -19,11 +21,26 @@ public interface TodoAPIService {
     @GET("/todos")
     Observable<List<TodoEntity>> fetchTodoList();
 
+    @POST("/todos")
+    Observable<TodoEntity> createTodo(@Body CreateTodoRequest request);
+
     @DELETE("/todos/{todo_id}")
     Observable<TodoEntity> deleteTodo(@Path("todo_id") Long todoId);
 
-    @POST("/todos")
-    Observable<TodoEntity> createTodo(@Body CreateTodoRequest createTodoRequest);
+    @PUT("/todos/{todo_id}")
+    Observable<TodoEntity> updateTodo(@Path("todo_id") Long todoId, @Body TodoEntity todoEntity);
+
+    @POST("/todos/{todo_id}/items")
+    Observable<TodoEntity> createTodoItem(@Path("todo_id") Long todoId, @Body CreateTodoItemRequest request);
+
+    @PUT("/todos/{todo_id}/items/{item_id}")
+    Observable<TodoEntity> updateTodoItem(@Path("todo_id") Long todoId,
+                                          @Path("item_id") Long item_id,
+                                          @Body TodoItemEntity todoItemEntity);
+
+    @DELETE("/todos/{todo_id}/items/{item_id}")
+    Observable<TodoEntity> deleteTodoItem(@Path("todo_id") Long todoId,
+                                          @Path("item_id") Long item_id);
 
 
 }
