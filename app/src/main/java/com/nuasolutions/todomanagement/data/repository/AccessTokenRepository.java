@@ -10,6 +10,7 @@ import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.local.dao.AccessTokenDAO;
 import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.data.remote.model.requests.LoginRequest;
+import com.nuasolutions.todomanagement.data.remote.model.requests.SignupRequest;
 import com.nuasolutions.todomanagement.data.remote.model.response.AccessTokenResponse;
 
 import java.util.ArrayList;
@@ -59,6 +60,42 @@ public class AccessTokenRepository {
             @Override
             protected Observable<Resource<AccessTokenResponse>> createCall() {
                 return apiService.doLogin(new LoginRequest(email, password))
+                    .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
+                        ? Resource.error("Failed to get accessToken.", null)
+                        : Resource.success(accessTokenResponse)));
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<List<AccessTokenEntity>>> signup(String name, String email, String pwd, String pwdConfirm) {
+        return new NetworkBoundResource<List<AccessTokenEntity>, AccessTokenResponse>() {
+
+            @Override
+            protected void saveCallResult(@NonNull AccessTokenResponse response) {
+                List<AccessTokenEntity> entities = new ArrayList<>();
+                entities.add(new AccessTokenEntity(response.accessToken));
+                accessTokenDAO.insertAccessToken(entities);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<List<AccessTokenEntity>> loadFromDb() {
+                List<AccessTokenEntity> entities = accessTokenDAO.getAccessTokens();
+                if(entities == null || entities.isEmpty()) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entities);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<AccessTokenResponse>> createCall() {
+                return apiService.doSignup(new SignupRequest(name, email, pwd, pwdConfirm))
                     .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
                         ? Resource.error("Failed to get accessToken.", null)
                         : Resource.success(accessTokenResponse)));

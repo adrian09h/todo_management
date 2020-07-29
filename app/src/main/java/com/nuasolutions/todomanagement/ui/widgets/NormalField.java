@@ -12,28 +12,27 @@ import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.interfaces.TextChangedListener;
 import com.nuasolutions.todomanagement.utils.CommonUtils;
 
-public class PasswordField extends androidx.appcompat.widget.AppCompatEditText {
+public class NormalField extends androidx.appcompat.widget.AppCompatEditText {
     @Nullable
-    public String password = "";
+    public String normalText = "";
     public boolean isValid = false;
     @Nullable
     private TextChangedListener listener;
 
-    public PasswordField(Context context) {
+    public NormalField(Context context) {
         super(context);
         initView(context, null, 0);
     }
 
-    public PasswordField(Context context, AttributeSet attrs) {
+    public NormalField(Context context, AttributeSet attrs) {
         super(context, attrs);
         initView(context, attrs, 0);
 
     }
 
-    public PasswordField(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NormalField(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs, defStyleAttr);
-
     }
 
     @Override
@@ -44,19 +43,20 @@ public class PasswordField extends androidx.appcompat.widget.AppCompatEditText {
     private void initView(Context context, @Nullable AttributeSet attributeSet, int defStyleAttr) {
         addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
 
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
 
             @Override
             public void afterTextChanged(Editable editable) {
                 checkChangedText();
             }
         });
-    }
-    public void setListener(TextChangedListener listener) {
-        this.listener = listener;
     }
 
     @Override
@@ -66,18 +66,19 @@ public class PasswordField extends androidx.appcompat.widget.AppCompatEditText {
     }
 
     private void checkChangedText() {
-        password = getText().toString();
-        isValid = CommonUtils.validatePassword(password);
+        normalText = getText().toString();
+        isValid = !TextUtils.isEmpty(normalText);
         if (!isValid) {
-            PasswordField.this.setError(getContext().getString(R.string.err_pwd_invalid));
+            NormalField.this.setError(getContext().getString(R.string.err_empty_field));
         } else {
-            PasswordField.this.setError(null);
-        }
-        if (TextUtils.isEmpty(password)) {
-            PasswordField.this.setError(null);
+            NormalField.this.setError(null);
         }
         if (listener != null) {
-            listener.onTextChanged(password, isValid);
+            listener.onTextChanged(normalText, isValid);
         }
+    }
+
+    public void setListener(TextChangedListener listener) {
+        this.listener = listener;
     }
 }

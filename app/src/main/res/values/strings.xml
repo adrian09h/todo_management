@@ -42,4 +42,12 @@
   <string name="add_newtask_dlg_title">Add a new TODO task</string>
   <string name="add_newtask_dlg_message">Enter task name here.</string>
   <string name="add">ADD</string>
+
+  <!-- Signup fragment -->
+  <string name="signuptitle">Sign Up</string>
+  <string name="name_hint">enter your name</string>
+  <string name="password_confirm_hint">confirm your password</string>
+  <string name="go_login">Back to Login </string>
+  <string name="err_empty_field">cannot be empty</string>
+
 </resources>

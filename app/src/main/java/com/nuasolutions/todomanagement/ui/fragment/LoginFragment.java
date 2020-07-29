@@ -109,7 +109,7 @@ public class LoginFragment extends BaseFragment {
         });
 
         mBinding.gosignup.setOnClickListener(view -> {
-
+            gotoSignup();
         });
 
         if (BuildConfig.DEBUG) {
@@ -126,6 +126,11 @@ public class LoginFragment extends BaseFragment {
     public void gotoTODOListPage() {
         NavHostFragment.findNavController(LoginFragment.this)
             .navigate(R.id.action_Login_to_TodoList);
+    }
+
+    public void gotoSignup() {
+        NavHostFragment.findNavController(LoginFragment.this)
+            .navigate(R.id.action_Login_to_Signup);
     }
 
 }

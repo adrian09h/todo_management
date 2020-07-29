@@ -15,7 +15,7 @@ public class SignupRequest {
     @SerializedName("password_confirmation")
     public String passwordConfirmation;
 
-    SignupRequest(String name, String email, String password, String pwdConfirmation) {
+    public SignupRequest(String name, String email, String password, String pwdConfirmation) {
         this.name = name;
         this.email = email;
         this.password = password;

@@ -33,6 +33,30 @@
       app:popEnterAnim="@android:anim/fade_in"
       app:popExitAnim="@android:anim/fade_out" />
 
+    <action
+      android:id="@+id/action_Login_to_Signup"
+      app:destination="@id/SignupFragment"
+      app:enterAnim="@anim/slide_in_right"
+      app:exitAnim="@anim/slide_out_left"
+      app:popEnterAnim="@anim/slide_in_left"
+      app:popExitAnim="@anim/slide_out_right" >
+    </action>
+
+  </fragment>
+
+  <fragment
+    android:id="@+id/SignupFragment"
+    android:name="com.nuasolutions.todomanagement.ui.fragment.SignupFragment"
+    android:label="@string/signuptitle"
+    tools:layout="@layout/fragment_signup">
+    <action
+      android:id="@+id/action_Signup_to_TodoList"
+      app:destination="@id/TodoListFragment"
+      app:enterAnim="@android:anim/fade_in"
+      app:exitAnim="@android:anim/fade_out"
+      app:popEnterAnim="@android:anim/fade_in"
+      app:popExitAnim="@android:anim/fade_out" />
+
 
   </fragment>
 

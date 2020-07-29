@@ -21,8 +21,8 @@ import java.util.Observable;
 
 public class EmailField extends androidx.appcompat.widget.AppCompatEditText {
     @Nullable
-    private String emailAddress;
-    private boolean isValid = false;
+    public String emailAddress = "";
+    public boolean isValid = false;
     @Nullable
     private TextChangedListener listener;
 
