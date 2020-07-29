@@ -127,10 +127,12 @@ public class TodoDetailFragment extends BaseFragment implements OnTodoTaskItemCl
                 .setPositiveButton(R.string.add, (dialogInterface, i) -> {
                     if (!TextUtils.isEmpty(mEditTodoTask.getText().toString())) {
                         createTodoItem(mEditTodoTask.getText().toString());
+                        mEditTodoTask.setText("");
                         mAlertDialogAddNew.dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    mEditTodoTask.setText("");
                     mAlertDialogAddNew.dismiss();
                 })
                 .create();

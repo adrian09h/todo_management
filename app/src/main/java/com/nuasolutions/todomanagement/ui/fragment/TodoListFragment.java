@@ -136,10 +136,12 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
                 .setPositiveButton(R.string.create, (dialogInterface, i) -> {
                     if (!TextUtils.isEmpty(mEditTodo.getText().toString())) {
                         createTodo(mEditTodo.getText().toString());
+                        mEditTodo.setText("");
                         mAlertDialogAddNew.dismiss();
                     }
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    mEditTodo.setText("");
                     mAlertDialogAddNew.dismiss();
                 })
                 .create();
