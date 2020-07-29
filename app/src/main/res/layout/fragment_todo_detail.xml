@@ -55,6 +55,9 @@
         android:id="@+id/empty_layout"
         layout="@layout/layout_empty"
         android:visibility="@{emptyVisiblity}"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         />
 
       <androidx.recyclerview.widget.RecyclerView

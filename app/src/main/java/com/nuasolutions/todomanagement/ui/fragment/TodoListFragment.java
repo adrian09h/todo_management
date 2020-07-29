@@ -68,7 +68,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
             if (resource.isLoading()) {
             } else {
                 hideLoader();
-                if (!resource.data.isEmpty()) {
+                if (resource.data != null && !resource.data.isEmpty()) {
                     Log.d(TodoListFragment.class.getSimpleName(), "recevied todoList:" + resource.data.toString());
                     if (resource.status != Status.SUCCESS) {
                         //failed to get a response from server, but from DB
@@ -99,6 +99,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         showErrorSnack(error);
     }
 
+    //==== Item Click Listeners =====
     @Override
     public void onItemClicked(TodoEntity todoEntity) {
         //open detail view
@@ -106,4 +107,10 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
             TodoListFragmentDirections.actionTodoListToDetail(todoEntity);
         NavHostFragment.findNavController(this).navigate(action);
     }
+
+    @Override
+    public void onItemLongClicked(TodoEntity todoEntity) {
+        mViewModel.deleteTodo(todoEntity);
+    }
+    //--------------
 }

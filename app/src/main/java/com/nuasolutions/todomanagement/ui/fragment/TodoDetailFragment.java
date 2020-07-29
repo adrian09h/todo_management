@@ -15,10 +15,10 @@ import android.view.ViewGroup;
 
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
+import com.nuasolutions.todomanagement.data.local.entity.TodoItemEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoDetailBinding;
-import com.nuasolutions.todomanagement.interfaces.OnItemLongClickListener;
+import com.nuasolutions.todomanagement.interfaces.OnTodoTaskItemClickListener;
 import com.nuasolutions.todomanagement.ui.adapter.TodoTasklListAdapter;
-import com.nuasolutions.todomanagement.ui.adapter.TodoListAdapter;
 import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
@@ -26,7 +26,7 @@ import javax.inject.Inject;
 
 import dagger.android.support.AndroidSupportInjection;
 
-public class TodoDetailFragment extends BaseFragment implements OnItemLongClickListener {
+public class TodoDetailFragment extends BaseFragment implements OnTodoTaskItemClickListener {
     @Inject
     ViewModelFactory viewModelFactory;
     private TodoDetailViewModel mViewModel;
@@ -83,8 +83,15 @@ public class TodoDetailFragment extends BaseFragment implements OnItemLongClickL
         mAdapter.setTodoTaskList(mTodoEntity.getItemList());
     }
 
+    // ======= Task Item ClickListener ====
     @Override
-    public void onItemLongClicked(Long id) {
+    public void onItemClicked(TodoItemEntity todoItemEntity) {
 
     }
+
+    @Override
+    public void onItemLongClicked(TodoItemEntity todoItemEntity) {
+
+    }
+    //-----------------------
 }

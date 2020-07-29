@@ -30,7 +30,9 @@ public class TodoRepository {
 
             @Override
             protected void saveCallResult(@NonNull List<TodoEntity> response) {
-                todoDAO.insertTodos(response);
+                if (response != null) {
+                    todoDAO.insertTodos(response);
+                }
             }
 
             @Override
@@ -52,6 +54,40 @@ public class TodoRepository {
             @Override
             protected Observable<Resource<List<TodoEntity>>> createCall() {
                 return apiService.fetchTodoList()
+                    .flatMap(response -> Observable.just(response == null
+                        ? Resource.error("Failed to fetch TODOs.", null)
+                        : Resource.success(response)));
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<List<TodoEntity>>> deleteTodo(TodoEntity todoEntity) {
+        return new NetworkBoundResource<List<TodoEntity>, List<TodoEntity>>() {
+
+            @Override
+            protected void saveCallResult(@NonNull List<TodoEntity> response) {
+                todoDAO.delete(todoEntity);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<List<TodoEntity>> loadFromDb() {
+                List<TodoEntity> entities = todoDAO.getTodoList();
+                if(entities == null || entities.isEmpty()) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entities);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<List<TodoEntity>>> createCall() {
+                return apiService.deleteTodo(String.valueOf(todoEntity.getId()))
                     .flatMap(response -> Observable.just(response == null
                         ? Resource.error("Failed to fetch TODOs.", null)
                         : Resource.success(response)));

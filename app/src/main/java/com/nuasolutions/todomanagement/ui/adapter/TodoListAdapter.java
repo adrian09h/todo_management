@@ -58,11 +58,11 @@ public class TodoListAdapter extends RecyclerView.Adapter<TodoListAdapter.TodoIt
         public TodoItemViewHolder(TodoListItemBinding binding) {
             super(binding.getRoot());
             this.mBinding = binding;
-            this.mBinding.title.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TodoListAdapter.this.mListener.onItemClicked(mTodoEntity);
-                }
+            this.mBinding.title.setOnClickListener(view ->
+                TodoListAdapter.this.mListener.onItemClicked(mTodoEntity));
+            this.mBinding.title.setOnLongClickListener(view -> {
+                mListener.onItemLongClicked(mTodoEntity);
+                return false;
             });
         }
         public void bindTo(TodoEntity todoEntity) {

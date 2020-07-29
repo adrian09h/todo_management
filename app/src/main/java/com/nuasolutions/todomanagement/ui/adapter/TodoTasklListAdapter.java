@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nuasolutions.todomanagement.data.local.entity.TodoItemEntity;
 import com.nuasolutions.todomanagement.databinding.TodoTaskListItemBinding;
-import com.nuasolutions.todomanagement.interfaces.OnItemLongClickListener;
+import com.nuasolutions.todomanagement.interfaces.OnTodoTaskItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,9 @@ import java.util.List;
 public class TodoTasklListAdapter extends RecyclerView.Adapter<TodoTasklListAdapter.TodoTaskItemViewHolder> {
 
     private List<TodoItemEntity> mTodoTaskList = new ArrayList<>();
-    private OnItemLongClickListener mListener;
+    private OnTodoTaskItemClickListener mListener;
 
-    public TodoTasklListAdapter(OnItemLongClickListener listener) {
+    public TodoTasklListAdapter(OnTodoTaskItemClickListener listener) {
         this.mListener = listener;
     }
 
@@ -61,7 +61,7 @@ public class TodoTasklListAdapter extends RecyclerView.Adapter<TodoTasklListAdap
             this.mBinding.cardView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    mListener.onItemLongClicked(mTodoItemEntity.getId());
+                    mListener.onItemLongClicked(mTodoItemEntity);
                     return false;
                 }
             });
