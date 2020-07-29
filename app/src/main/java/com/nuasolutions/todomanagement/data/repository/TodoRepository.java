@@ -97,12 +97,12 @@ public class TodoRepository {
         }.getAsObservable();
     }
 
-    public Observable<Resource<List<TodoEntity>>> deleteTodo(TodoEntity todoEntity) {
+    public Observable<Resource<List<TodoEntity>>> deleteTodo(Long todoId) {
         return new NetworkBoundResource<List<TodoEntity>, TodoEntity>() {
 
             @Override
             protected void saveCallResult(@NonNull TodoEntity response) {
-                todoDAO.delete(todoEntity);
+
             }
 
             @Override
@@ -123,10 +123,11 @@ public class TodoRepository {
             @NonNull
             @Override
             protected Observable<Resource<TodoEntity>> createCall() {
-                return apiService.deleteTodo(todoEntity.getId())
-                    .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
-                        ? Resource.error("Failed to create TODO.", null)
-                        : Resource.success(accessTokenResponse)));
+                todoDAO.deleteById(todoId);
+                return apiService.deleteTodo(todoId)
+                    .flatMap(res -> Observable.just(res == null
+                        ? Resource.error("Failed to delete TODO.", null)
+                        : Resource.success(res)));
             }
         }.getAsObservable();
     }

@@ -28,6 +28,7 @@ import com.nuasolutions.todomanagement.utils.ContextUtils;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,6 +44,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
     private AlertDialog mAlertDialogAddNew;
     private AlertDialog mAlertDialogConfirmDelete;
     private EditText mEditTodo;
+    private Long mPickedTodoId;
     public static TodoListFragment newInstance() {
         return new TodoListFragment();
     }
@@ -83,6 +85,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
                     }
                     mTodoListAdapter.setTodoList(resource.data);
                 } else {
+                    mTodoListAdapter.setTodoList(new ArrayList<>());
                     handleErrorResponse(resource);
                 }
             }
@@ -111,9 +114,9 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         mViewModel.createTodo(title);
     }
 
-    private void deleteTodo(TodoEntity todoEntity) {
+    private void deleteTodo(Long todoId) {
         displayLoader();
-        mViewModel.deleteTodo(todoEntity);
+        mViewModel.deleteTodo(todoId);
     }
 
     //--------------------
@@ -157,13 +160,15 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
     @Override
     public void onItemLongClicked(TodoEntity todoEntity) {
         //Delete To_do
+        mPickedTodoId = todoEntity.getId();
+        Log.d("Debug", todoEntity.getId().toString());
         ContextUtils.vibrate(activity);
         if (mAlertDialogConfirmDelete == null) {
             mAlertDialogConfirmDelete = new AlertDialog.Builder(getContext())
                 .setTitle(R.string.delete_confirm_dlg_title)
                 .setMessage(R.string.delete_confirm_dlg_message)
                 .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
-                    deleteTodo(todoEntity);
+                    deleteTodo(mPickedTodoId);
                     mAlertDialogConfirmDelete.dismiss();
                 })
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
@@ -173,6 +178,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         }
 
         mAlertDialogConfirmDelete.show();
+
     }
     //--------------
 }

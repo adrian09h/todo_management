@@ -19,8 +19,8 @@ public interface TodoDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long insertOneTodo(TodoEntity todoEntity);
 
-    @Delete
-    void delete(TodoEntity todoEntity);
+    @Query("DELETE FROM 'TodoEntity' where id = :id")
+    void deleteById(Long id);
 
     @Query("SELECT * FROM 'TodoEntity'")
     List<TodoEntity> getTodoList();

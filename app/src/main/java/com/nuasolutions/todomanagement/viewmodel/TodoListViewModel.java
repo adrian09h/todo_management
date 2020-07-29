@@ -46,8 +46,8 @@ public class TodoListViewModel extends BaseViewModel {
     }
 
     @SuppressLint("CheckResult")
-    public void deleteTodo(TodoEntity todoEntity) {
-        repository.deleteTodo(todoEntity)
+    public void deleteTodo(Long todoId) {
+        repository.deleteTodo(todoId)
             .switchIfEmpty(emptyResource())
             .subscribe(resource -> {
                 postResult(resource);
