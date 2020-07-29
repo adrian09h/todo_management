@@ -21,7 +21,14 @@
 
 This project follows MVVM architecture.
 
-## List of Todos
-- Implement "Add/Delete" Todos and Todo items
-- Implement Signup screen
-- Add Test Cases
+## Features
+- Users can register and log in.
+- Users can create a new todo and delete existing one by long clicking a todo.
+- Users can add a new todo item and delete existing one by long clicking an item.
+- Users can see their todos even when they are offline.
+
+## TODO in next version
+- Sync offline changes to backend when the device comes to online.
+- Switch account feature
+- Update UI
+- Fix issues
