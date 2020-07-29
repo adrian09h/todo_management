@@ -17,6 +17,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+
 public class TodoDetailViewModel extends BaseViewModel {
     private TodoRepository mRepository;
     private ObservableInt mEmptyVisiblity = new ObservableInt(View.GONE);
@@ -35,13 +37,19 @@ public class TodoDetailViewModel extends BaseViewModel {
             .subscribe(this::postResult);
     }
 
+    @SuppressLint("CheckResult")
+    public void deleteTodoItem(TodoEntity updatedOne, Long itemId) {
+        mRepository.deleteTodoItem(updatedOne, updatedOne.getId(), itemId)
+            .subscribe(this::postResult);
+    }
     public void initTodoLiveData(TodoEntity todoEntity) {
         postResult(Resource.success(todoEntity));
     }
 
+    //====== private functions ========
     private void postResult(@Nullable Resource<TodoEntity> resource) {
         todoLiveData.postValue(resource);
-        if (resource.data != null) {
+        if (resource.data != null && !resource.data.getItemList().isEmpty()) {
             mEmptyVisiblity.set(View.GONE);
             mListVisibility.set(View.VISIBLE);
         } else {
@@ -50,6 +58,7 @@ public class TodoDetailViewModel extends BaseViewModel {
         }
     }
 
+    //===== Getters =========
     public ObservableInt getEmptyVisiblity() {
         return mEmptyVisiblity;
     }

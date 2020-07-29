@@ -25,6 +25,7 @@ import com.nuasolutions.todomanagement.data.local.entity.TodoItemEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoDetailBinding;
 import com.nuasolutions.todomanagement.interfaces.OnTodoTaskItemClickListener;
 import com.nuasolutions.todomanagement.ui.adapter.TodoTasklListAdapter;
+import com.nuasolutions.todomanagement.utils.ContextUtils;
 import com.nuasolutions.todomanagement.viewmodel.TodoDetailViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
@@ -45,7 +46,9 @@ public class TodoDetailFragment extends BaseFragment implements OnTodoTaskItemCl
 
     private AlertDialog mAlertDialogAddNew;
     private EditText mEditTodoTask;
-
+    private AlertDialog mAlertDialogConfirmDelete;
+    private int pickedItemPosition = 0;
+    private Long pickedItemId;
     public static TodoDetailFragment newInstance() {
         return new TodoDetailFragment();
     }
@@ -142,6 +145,13 @@ public class TodoDetailFragment extends BaseFragment implements OnTodoTaskItemCl
         mViewModel.createTodoItem(mTodoEntity.getId(), newTaskName, false);
     }
 
+    private void deleteTodoItem(int position, Long itemId) {
+        displayLoader();
+        mTodoEntity.getItemList().remove(position);
+        mViewModel.deleteTodoItem(mTodoEntity, itemId);
+    }
+    //----------------
+
     // ======= Task Item ClickListener ====
     @Override
     public void onItemClicked(TodoItemEntity todoItemEntity) {
@@ -150,7 +160,29 @@ public class TodoDetailFragment extends BaseFragment implements OnTodoTaskItemCl
 
     @Override
     public void onItemLongClicked(TodoItemEntity todoItemEntity) {
+        for (int i=0; i < mTodoEntity.getItemList().size(); i++) {
+            if (mTodoEntity.getItemList().get(i).getId().equals(todoItemEntity.getId())) {
+                pickedItemPosition =  i;
+                break;
+            }
+        }
+        pickedItemId = todoItemEntity.getId();
+        ContextUtils.vibrate(activity);
+        if (mAlertDialogConfirmDelete == null) {
+            mAlertDialogConfirmDelete = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.delete_confirm_dlg_title)
+                .setMessage(R.string.delete_confirm_dlg_message)
+                .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+                    deleteTodoItem(pickedItemPosition, pickedItemId);
+                    mAlertDialogConfirmDelete.dismiss();
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    mAlertDialogConfirmDelete.dismiss();
+                })
+                .create();
+        }
 
+        mAlertDialogConfirmDelete.show();
     }
     //-----------------------
 }

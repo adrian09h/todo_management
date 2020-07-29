@@ -103,7 +103,7 @@ public class TodoRepository {
 
             @Override
             protected void saveCallResult(@NonNull TodoEntity response) {
-                todoDAO.insertOneTodo(todoEntity);
+
             }
 
             @Override
@@ -124,6 +124,7 @@ public class TodoRepository {
             @NonNull
             @Override
             protected Observable<Resource<TodoEntity>> createCall() {
+                todoDAO.insertOneTodo(todoEntity);
                 return apiService.updateTodo(todoEntity.getId(), todoEntity)
                     .flatMap(response -> Observable.just(response == null
                         ? Resource.error("Failed to create TODO.", null)
@@ -196,6 +197,40 @@ public class TodoRepository {
                 return apiService.createTodoItem(todoId, new CreateTodoItemRequest(name, done))
                     .flatMap(response -> Observable.just(response == null
                         ? Resource.error("Failed to create TODO.", null)
+                        : Resource.success(response)));
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<TodoEntity>> deleteTodoItem(TodoEntity todoEntity, Long todoId, Long itemId) {
+        return new NetworkBoundResource<TodoEntity, TodoEntity>() {
+
+            @Override
+            protected void saveCallResult(@NonNull TodoEntity response) {
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<TodoEntity> loadFromDb() {
+                TodoEntity entitity = todoDAO.getTodoById(todoId);
+                if(entitity == null) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entitity);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<TodoEntity>> createCall() {
+                todoDAO.insertOneTodo(todoEntity);
+                return apiService.deleteTodoItem(todoId, itemId)
+                    .flatMap(response -> Observable.just(response == null
+                        ? Resource.error("Failed to delete TODO item.", null)
                         : Resource.success(response)));
             }
         }.getAsObservable();
