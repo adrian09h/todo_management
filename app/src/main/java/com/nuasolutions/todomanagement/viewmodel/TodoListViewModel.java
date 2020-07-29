@@ -15,6 +15,7 @@ import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.data.remote.api.TodoAPIService;
 import com.nuasolutions.todomanagement.data.repository.TodoRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -35,15 +36,31 @@ public class TodoListViewModel extends BaseViewModel {
         repository = new TodoRepository(todoDAO, apiService);
     }
 
-
+    @SuppressLint("CheckResult")
     public void loadTodoList() {
         repository.loadTodoList()
             .switchIfEmpty(emptyResource())
             .subscribe(resource -> {
                 postResult(resource);
-            })
+            });
+    }
 
-        ;
+    @SuppressLint("CheckResult")
+    public void deleteTodo(TodoEntity todoEntity) {
+        repository.deleteTodo(todoEntity)
+            .switchIfEmpty(emptyResource())
+            .subscribe(resource -> {
+                postResult(resource);
+            });
+    }
+
+    @SuppressLint("CheckResult")
+    public void createTodo(String title) {
+        repository.createTodo(title)
+            .switchIfEmpty(emptyResource())
+            .subscribe(resource -> {
+                postResult(resource);
+            });
     }
 
     private Observable<Resource<List<TodoEntity>>> emptyResource() {
@@ -60,21 +77,6 @@ public class TodoListViewModel extends BaseViewModel {
             emptyVisibility.set(View.VISIBLE);
             listVisibility.set(View.GONE);
         }
-    }
-
-    @SuppressLint("CheckResult")
-    public void deleteTodo(TodoEntity todoEntity) {
-        repository.deleteTodo(todoEntity)
-            .subscribe(resource -> {
-                todoListLiveData.postValue(resource);
-                if (!resource.data.isEmpty()) {
-                    emptyVisibility.set(View.GONE);
-                    listVisibility.set(View.VISIBLE);
-                } else {
-                    emptyVisibility.set(View.VISIBLE);
-                    listVisibility.set(View.GONE);
-                }
-            });
     }
 
     public ObservableInt getEmptyVisibility() {

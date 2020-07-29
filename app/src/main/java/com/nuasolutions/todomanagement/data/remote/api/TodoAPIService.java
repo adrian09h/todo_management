@@ -1,6 +1,7 @@
 package com.nuasolutions.todomanagement.data.remote.api;
 
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
+import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoRequest;
 
 
 import java.util.List;
@@ -19,7 +20,10 @@ public interface TodoAPIService {
     Observable<List<TodoEntity>> fetchTodoList();
 
     @DELETE("/todos/{todo_id}")
-    Completable deleteTodo(@Path("todo_id") String todoId);
+    Observable<List<TodoEntity>> deleteTodo(@Path("todo_id") String todoId);
+
+    @POST("/todos")
+    Observable<TodoEntity> createTodo(@Body CreateTodoRequest createTodoRequest);
 
 
 }

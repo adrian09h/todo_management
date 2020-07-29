@@ -6,9 +6,14 @@ import androidx.annotation.NonNull;
 import com.nuasolutions.todomanagement.data.NetworkBoundResource;
 import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.local.dao.TodoDAO;
+import com.nuasolutions.todomanagement.data.local.entity.AccessTokenEntity;
 import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.data.remote.api.TodoAPIService;
+import com.nuasolutions.todomanagement.data.remote.model.requests.CreateTodoRequest;
+import com.nuasolutions.todomanagement.data.remote.model.requests.LoginRequest;
+import com.nuasolutions.todomanagement.data.remote.model.response.AccessTokenResponse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Singleton;
@@ -91,6 +96,40 @@ public class TodoRepository {
                     .flatMap(response -> Observable.just(response == null
                         ? Resource.error("Failed to fetch TODOs.", null)
                         : Resource.success(response)));
+            }
+        }.getAsObservable();
+    }
+
+    public Observable<Resource<List<TodoEntity>>> createTodo(String title) {
+        return new NetworkBoundResource<List<TodoEntity>, TodoEntity>() {
+
+            @Override
+            protected void saveCallResult(@NonNull TodoEntity response) {
+                todoDAO.insertOneTodo(response);
+            }
+
+            @Override
+            protected boolean shouldFetch() {
+                return true;
+            }
+
+            @NonNull
+            @Override
+            protected Flowable<List<TodoEntity>> loadFromDb() {
+                List<TodoEntity> entities = todoDAO.getTodoList();
+                if(entities == null || entities.isEmpty()) {
+                    return Flowable.empty();
+                }
+                return Flowable.just(entities);
+            }
+
+            @NonNull
+            @Override
+            protected Observable<Resource<TodoEntity>> createCall() {
+                return apiService.createTodo(new CreateTodoRequest(title))
+                    .flatMap(accessTokenResponse -> Observable.just(accessTokenResponse == null
+                        ? Resource.error("Failed to create TODO.", null)
+                        : Resource.success(accessTokenResponse)));
             }
         }.getAsObservable();
     }

@@ -1,18 +1,23 @@
 package com.nuasolutions.todomanagement.ui.fragment;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.ViewModelProviders;
+
+import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
 import com.nuasolutions.todomanagement.R;
 import com.nuasolutions.todomanagement.data.Resource;
 import com.nuasolutions.todomanagement.data.Status;
@@ -20,6 +25,7 @@ import com.nuasolutions.todomanagement.data.local.entity.TodoEntity;
 import com.nuasolutions.todomanagement.databinding.FragmentTodoListBinding;
 import com.nuasolutions.todomanagement.interfaces.OnTodoItemClickListener;
 import com.nuasolutions.todomanagement.ui.adapter.TodoListAdapter;
+import com.nuasolutions.todomanagement.utils.ContextUtils;
 import com.nuasolutions.todomanagement.viewmodel.TodoListViewModel;
 import com.nuasolutions.todomanagement.viewmodel.ViewModelFactory;
 
@@ -35,7 +41,8 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
     private TodoListViewModel mViewModel;
     private FragmentTodoListBinding mBinding;
     private TodoListAdapter mTodoListAdapter;
-
+    private AlertDialog mAlertDialog;
+    private EditText mEditTodo;
     public static TodoListFragment newInstance() {
         return new TodoListFragment();
     }
@@ -58,8 +65,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         super.onActivityCreated(savedInstanceState);
         initViewModel();
         initViews();
-        displayLoader();
-        mViewModel.loadTodoList();
+        getTodoList();
     }
 
     private void initViewModel() {
@@ -92,6 +98,7 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         mBinding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         mTodoListAdapter = new TodoListAdapter(this);
         mBinding.recyclerView.setAdapter(mTodoListAdapter);
+        mBinding.fab.setOnClickListener(view -> onAddNewClicked());
     }
 
     private void handleErrorResponse(Resource<List<TodoEntity>> resource) {
@@ -99,6 +106,38 @@ public class TodoListFragment extends BaseFragment implements OnTodoItemClickLis
         showErrorSnack(error);
     }
 
+    private void onAddNewClicked() {
+        if (mAlertDialog == null) {
+            mEditTodo = new EditText(getContext());
+            mAlertDialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.add_new_dlg_title)
+                .setMessage(R.string.add_new_dlg_message)
+                .setView(mEditTodo)
+                .setPositiveButton(R.string.create, (dialogInterface, i) -> {
+                    if (!TextUtils.isEmpty(mEditTodo.getText().toString())) {
+                        createTodo(mEditTodo.getText().toString());
+                        mAlertDialog.dismiss();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {
+                    mAlertDialog.dismiss();
+                })
+                .create();
+        }
+
+        mAlertDialog.show();
+    }
+
+    //===== call apis ====
+    private void getTodoList() {
+        displayLoader();
+        mViewModel.loadTodoList();
+    }
+    private void createTodo(String title) {
+        displayLoader();
+        mViewModel.createTodo(title);
+    }
+    //--------------------
     //==== Item Click Listeners =====
     @Override
     public void onItemClicked(TodoEntity todoEntity) {

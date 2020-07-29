@@ -28,6 +28,10 @@
   <!-- TODO_List fragment -->
   <string name="todos_frag_title">TODO List</string>
   <string name="empty_text">Nothing here. Try to add one!</string>
+  <string name="add_new_dlg_title">Add a new TODO</string>
+  <string name="add_new_dlg_message">TODO Title</string>
+  <string name="create">CREATE</string>
+  <string name="cancel">CANCEL</string>
 
   <!-- TODO_Detail fragment -->
   <string name="todos_detail_title">TODO Detail</string>

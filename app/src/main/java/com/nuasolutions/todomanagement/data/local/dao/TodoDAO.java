@@ -15,10 +15,17 @@ import java.util.List;
 public interface TodoDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertTodos(List<TodoEntity> todoEntityList);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long insertOneTodo(TodoEntity todoEntity);
+
     @Delete
     void delete(TodoEntity todoEntity);
 
     @Query("SELECT * FROM 'TodoEntity'")
     List<TodoEntity> getTodoList();
+
+    @Query("SELECT * FROM 'TodoEntity' where id = :id")
+    TodoEntity getTodoById(Long id);
 
 }
