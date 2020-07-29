@@ -13,7 +13,10 @@ import java.util.List;
 public interface AccessTokenDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertAccessToken(List<AccessTokenEntity> accessTokenEntities);
+
     @Query("SELECT * FROM 'AccessTokenEntity'")
     List<AccessTokenEntity> getAccessTokens();
-    //TODO: add delete
+
+    @Query("DELETE FROM 'AccessTokenEntity' where id = :id")
+    void deleteById(Long id);
 }
