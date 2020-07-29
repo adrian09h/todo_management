@@ -32,6 +32,9 @@
   <string name="add_new_dlg_message">TODO Title</string>
   <string name="create">CREATE</string>
   <string name="cancel">CANCEL</string>
+  <string name="delete_confirm_dlg_title">Warning</string>
+  <string name="delete_confirm_dlg_message">Are you sure to delete?</string>
+  <string name="delete">DELETE</string>
 
   <!-- TODO_Detail fragment -->
   <string name="todos_detail_title">TODO Detail</string>

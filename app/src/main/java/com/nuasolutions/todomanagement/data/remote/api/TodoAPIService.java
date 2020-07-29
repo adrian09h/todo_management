@@ -20,7 +20,7 @@ public interface TodoAPIService {
     Observable<List<TodoEntity>> fetchTodoList();
 
     @DELETE("/todos/{todo_id}")
-    Observable<List<TodoEntity>> deleteTodo(@Path("todo_id") String todoId);
+    Observable<TodoEntity> deleteTodo(@Path("todo_id") Long todoId);
 
     @POST("/todos")
     Observable<TodoEntity> createTodo(@Body CreateTodoRequest createTodoRequest);
