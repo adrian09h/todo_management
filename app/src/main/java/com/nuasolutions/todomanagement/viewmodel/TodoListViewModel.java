@@ -57,7 +57,6 @@ public class TodoListViewModel extends BaseViewModel {
     @SuppressLint("CheckResult")
     public void createTodo(String title) {
         repository.createTodo(title)
-            .switchIfEmpty(emptyResource())
             .subscribe(resource -> {
                 postResult(resource);
             });
